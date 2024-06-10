@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const { connect } = require('../rabbitmq/config');
 const mongoose = require('mongoose');
 
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect("mongodb://localhost:27017/microservices", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });

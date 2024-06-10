@@ -13,7 +13,7 @@ async function handleMessage() {
     channel.consume('newsletters', async (msg) => {
         const { email, content } = JSON.parse(msg.content.toString());
         
-        console.log(`Sending newsletter to ${email}: ${content}`);
+        console.log(`Sending newsletter to ${email}:`);
 
         channel.ack(msg);
     });

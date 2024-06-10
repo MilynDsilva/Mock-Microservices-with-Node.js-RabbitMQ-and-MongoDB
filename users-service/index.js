@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const { connect } = require('../rabbitmq/config');
 const mongoose = require('mongoose');
 
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect('mongodb://localhost:27017/microservices', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
@@ -33,6 +33,10 @@ async function handleMessage() {
         const { username, password, email } = JSON.parse(msg.content.toString());
         const user = new User({ username, password, email });
         await user.save();
+        
+        // Publish to newsletters exchange
+        channel.publish('newsletters_exchange', '', Buffer.from(JSON.stringify({ email })));
+
         channel.sendToQueue(msg.properties.replyTo, Buffer.from('Signup successful'), {
             correlationId: msg.properties.correlationId,
         });
